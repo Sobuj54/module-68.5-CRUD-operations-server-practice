@@ -50,7 +50,6 @@ async function run() {
     // get specific data from server
     app.get("/chocolates/:id", async (req, res) => {
       const id = req.params.id;
-      console.log(id);
       const query = { _id: new ObjectId(id) };
       const result = await chocolateCollection.findOne(query);
       res.send(result);
@@ -59,6 +58,22 @@ async function run() {
     // update data
     app.put("/chocolates/:id", async (req, res) => {
       const id = req.params.id;
+      const chocolate = req.body;
+      const filter = { _id: new ObjectId(id) };
+      const options = { upsert: true };
+      const updateChocolate = {
+        $set: {
+          name: chocolate.name,
+          country: chocolate.country,
+          select: chocolate.select,
+        },
+      };
+      const result = await chocolateCollection.updateOne(
+        filter,
+        updateChocolate,
+        options
+      );
+      res.send(result);
     });
 
     // delete

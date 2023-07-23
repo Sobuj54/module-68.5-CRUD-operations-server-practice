@@ -40,6 +40,13 @@ async function run() {
       res.send(result);
     });
 
+    // get data from server
+    app.get("/chocolates", async (req, res) => {
+      const cursor = chocolateCollection.find();
+      const result = await cursor.toArray();
+      res.send(result);
+    });
+
     // Send a ping to confirm a successful connection
     await client.db("admin").command({ ping: 1 });
     console.log(
